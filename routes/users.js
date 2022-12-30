@@ -8,6 +8,12 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/find').get((req,res)=>{
+  User.findOne({"username":req.body.username,"password":req.body.password})
+    .then(user=>res.json(user))
+    .catch(err => res.status(404).json('Error: ' + err))
+})
+
 router.route('/add').post((req, res) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -16,7 +22,7 @@ router.route('/add').post((req, res) => {
   const newUser = new User({username, password, lis});
 
   newUser.save()
-    .then(() => res.json('User added!'))
+    .then(() => res.json(newUser))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
